@@ -11,6 +11,6 @@ function hist = getFaceHist(state, maxFace)
     %Check each face value
     for faceVal = 1:maxFace
         % how many of faceVal are in each column vector state
-        hist(faceVal,:) = sum(state == faceVal,1)
+        hist(faceVal,:) = sum(state == faceVal,1);
     end
 end
