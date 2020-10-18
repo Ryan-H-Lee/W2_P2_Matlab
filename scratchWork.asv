@@ -83,11 +83,9 @@ nStates = size(stateSpace,2);
 for step = 1:maxH
     for sNum = 1:nStates
         valLast = val
-        maxPolicyVal = 0
-        for aNum = 1:nActs
-            %sum accross the s' for a state and action Pair 
-            newPolicyVals = sum( transprob(sNum,aNum,:).*( rsas(sNum,aNum,:) + gamma*valLast(sNum) )
-            %We want to recored the s' for the largest value 
+        maxVal = 0
+        for aNum = 1:nActs  
+            newPolicyVal = sum( transprob(sNum,aNum,:).*( rsas(sNum,aNum,:) + gamma*valLast(sNum) )
         end
     end
 end
