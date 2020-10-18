@@ -5,15 +5,13 @@
 % outcomes: is a list of column vectors with possible exit states
 
 function outcomes = takeAction( state, action, stateSpace)
-% add up the number of fliped (1s) die
-numFlipped = sum(action);
 % get highest face number from the state space
-nFaces = max(max(stateSpace, [],2), [], 1) + 1;
+nFaces = max(max(stateSpace, [],2), [], 1);
 
 % Identify which rows will be changed
 replaceRows = find(action);
 % Generate values for the rows that are changing
-replaceVals = countUp(length(replaceRows), nFaces);
+replaceVals = countUp(length(replaceRows), nFaces) + 1;
 
 % Start the output matrix by, copying the old state, for each new state
 outcomes = repmat(state, 1,size(replaceVals,2));
