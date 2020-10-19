@@ -2,7 +2,7 @@
 % each die has m faces
 nFace = 6
 nDice = 5
-nActs  = 2; %Flip or not
+nActs  = 2 %Flip or not
 faceWorth = [1:nFace]'; %How many points is a face worth
 maxH = 2;
 gamma = 1;
@@ -13,33 +13,37 @@ stateSpace = countUp(nDice, nFace);
 stateSpace = stateSpace + ones(size(stateSpace));
 
 actionSpace = countUp(nDice, nActs);
-actionSpace
+% actionSpace
 
 %% Test for generating outcome states
 action = actionSpace(:, 4)
 state = stateSpace(:,1)
 
-numFlipped = sum(action)
-nFaces = max(max(stateSpace, [],2),[],1)
-replaceRows = find(action)
-replaceVals = countUp(length(replaceRows), nFaces) + 1;
+% numFlipped = sum(action)
+% nFaces = max(max(stateSpace, [],2),[],1)
+% replaceRows = find(action)
+% replaceVals = countUp(length(replaceRows), nFaces) + 1;
 
-%Calculate the possible actions for a given roll
-outcomes = repmat(state, 1,size(replaceVals,2));
-outcomes(replaceRows ,:) = replaceVals
-nMatch = size(outcomes,2)
-p = 1/nMatch;
-pMatrix = zeros( size(stateSpace,2),1);
-for vect = 1:nMatch
-    sNum = all(stateSpace - repmat(outcomes(:,vect), 1,size(stateSpace,2)) == 0);
-    sNum = find(sNum);
-    pMatrix(sNum) = p;
-end
-
-pMatrix
+% %Calculate the possible actions for a given roll
+% outcomes = repmat(state, 1,size(replaceVals,2));
+% outcomes(replaceRows ,:) = replaceVals
+% nMatch = size(outcomes,2)
+% p = 1/nMatch;
+% pMatrix = zeros( size(stateSpace,2),1);
+% for vect = 1:nMatch
+%     sNum = all(stateSpace - repmat(outcomes(:,vect), 1,size(stateSpace,2)) == 0);
+%     sNum = find(sNum);
+%     pMatrix(sNum) = p;
+% end
+% 
+% pMatrix
 %generate the transition prob list for state action pair using function
-pMatrix2 = tProb(state, action, stateSpace)
-sum(sum(pMatrix - pMatrix2)) % if the matrices match this sum is 0
+tic
+for i = 1:1000
+ pMatrix = tProb(state, action, stateSpace)
+end
+ toc
+% sum(sum(pMatrix - pMatrix2)) % if the matrices match this sum is 0
 %% Test for generating Transition Matrix
 
 
@@ -74,26 +78,26 @@ end
 
 
 %% Value Iteration
-% %at H = 0 the values are the current values of the state sum of max dice
-% faceHist = getFaceHist(stateSpace,nFace);
-% val = zeros( size(max( faceHist.*faceWorth,[],1)'));
-% nActs = size(actionSpace,2);
-% nStates = size(stateSpace,2);
-% 
-% valLast = val
-% for step = 1:maxH
-%     %Loop through all starting states
-%     for sNum = 1:nStates
-%         %For each state find the Value for each action
-%         for aNum = 1:nActs
-%             %sum accross the s' for a state and action Pair 
-%             newPolicyVals(sNum,aNum) = sum( transProb(sNum,aNum,:).*( rsas(sNum,aNum,:) + gamma*valLast(sNum) ));
-%         end
-%         [bestVal, a] = max(newPolicyVals(sNum,:));
-%         valLast(sNum) = bestVal; 
-%         policy(sNum,step) = a;
-%     end
-% end
-% 
-% policy
-% valLast
+%at H = 0 the values are the current values of the state sum of max dice
+faceHist = getFaceHist(stateSpace,nFace);
+val = zeros( size(max( faceHist.*faceWorth,[],1)'));
+nActs = size(actionSpace,2);
+nStates = size(stateSpace,2);
+
+valLast = val
+for step = 1:maxH
+    %Loop through all starting states
+    for sNum = 1:nStates
+        %For each state find the Value for each action
+        for aNum = 1:nActs
+            %sum accross the s' for a state and action Pair 
+            newPolicyVals(sNum,aNum) = sum( transProb(sNum,aNum,:).*( rsas(sNum,aNum,:) + gamma*valLast(sNum) ));
+        end
+        [bestVal, a] = max(newPolicyVals(sNum,:));
+        valLast(sNum) = bestVal; 
+        policy(sNum,step) = a;
+    end
+end
+
+policy
+valLast

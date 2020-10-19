@@ -1,0 +1,8 @@
+nFace = 6
+nDice = 5
+nActs  = 2 %Flip or not
+
+stateSpace = countUp(nDice, nFace) + 1;
+faceHist = getFaceHist(stateSpace,nFace);
+
+sum(faceHist.*nFaces.^[0:nDice]',1)
