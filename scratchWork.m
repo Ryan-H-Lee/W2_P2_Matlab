@@ -38,11 +38,11 @@ state = stateSpace(:,1)
 % 
 % pMatrix
 %generate the transition prob list for state action pair using function
-tic
-for i = 1:1000
- pMatrix = tProb(state, action, stateSpace)
-end
- toc
+% tic
+% for i = 1:1000
+%  pMatrix = tProb(state, action, stateSpace)
+% end
+%  toc
 % sum(sum(pMatrix - pMatrix2)) % if the matrices match this sum is 0
 %% Test for generating Transition Matrix
 
@@ -56,14 +56,14 @@ end
 % 
 % transProb
 %Generate all transition prob pairs in matrix
-transProb = generateTransitonProbSet(stateSpace, actionSpace)
+transProb = generateTransitonProbSet(stateSpace, actionSpace);
 
 % sum(transProb- transProb2, 'all')% if the matrices match this sum is 0
 
 %% Reward Function
 % Ways to get rewards are defined to have the from: r(s,a,s')
 
-faceHist = getFaceHist(stateSpace,nFace)
+faceHist = getFaceHist(stateSpace,nFace);
 %If we are allowing Heads to be 1 tails to be 2
 stateReward = max( faceHist.*faceWorth,[],1)';
 %Assuming the points only depend on the final state then r(s,a,s') is just
@@ -79,12 +79,12 @@ end
 
 %% Value Iteration
 %at H = 0 the values are the current values of the state sum of max dice
-faceHist = getFaceHist(stateSpace,nFace);
+% faceHist = getFaceHist(stateSpace,nFace);
 val = zeros( size(max( faceHist.*faceWorth,[],1)'));
 nActs = size(actionSpace,2);
 nStates = size(stateSpace,2);
 
-valLast = val
+valLast = val;
 for step = 1:maxH
     %Loop through all starting states
     for sNum = 1:nStates

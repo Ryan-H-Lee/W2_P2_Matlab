@@ -5,7 +5,7 @@
 %this function will take a list of dice and their state and return a column
 
 function hist = getFaceHist(state, maxFace)
-    nStates = size(state,2)
+    nStates = size(state,2);
     %Holds output values
     hist = zeros(maxFace,nStates);
     %Check each face value
